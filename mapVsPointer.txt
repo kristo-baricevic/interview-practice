@@ -1,4 +1,4 @@
-3) Map vs Pointer Decision Drill
+# Map vs Pointer Decision Drill
 
 I’ll give scenarios. You say the approach.
 
