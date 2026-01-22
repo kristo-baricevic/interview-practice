@@ -1,0 +1,33 @@
+3) Map vs Pointer Decision Drill
+
+I’ll give scenarios. You say the approach.
+
+## Unsorted array, need two numbers that sum to target
+
+Answer: Map
+
+Why: No ordering guarantee.
+
+## Sorted array, need to find a pair
+
+Answer: Two pointers
+
+Why: Order lets you move deterministically.
+
+## Count occurrences of items
+
+Answer: Map
+
+Why: You need associated values.
+
+## Remove duplicates in place from sorted data
+
+Answer: Two pointers
+
+Why: Adjacent duplicates, constant space.
+
+## Sliding window with uniqueness only
+
+Answer: Set
+
+Why: Presence matters, not counts or indices.
