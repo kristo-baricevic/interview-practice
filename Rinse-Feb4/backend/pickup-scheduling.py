@@ -135,3 +135,71 @@ def reschedule_order(order_id: int, new_pickup_window_id: int) -> bool:
 
     return True
 
+# Problem: cancel_order
+
+# You are given an in-memory order scheduling system.
+
+# Each order has:
+# - id
+# - scheduled_window (or None)
+# - state (one of: pending, scheduled, picked_up, delivered, canceled)
+
+# The system tracks capacity per time window.
+
+# Task
+# Implement a function:
+
+# cancel_order(order_id)
+# that cancels an order safely and idempotently.
+
+# Requirements
+# - If the order does not exist, return an error.
+# - If the order is already canceled, do nothing and return success.
+# - If the order is picked_up or delivered, cancellation is not allowed.
+
+# If the order is scheduled:
+# - Release capacity for its scheduled window.
+# - Clear the scheduled window.
+# - Set the order’s state to canceled.
+# - Do not leave the system in a partially updated state.
+
+# Constraints
+# - In-memory data only.
+# - No concurrency primitives.
+# - Favor clarity over cleverness.
+# - Make state transitions explicit.
+
+def cancel_order(order_id: int) -> bool:
+    order = orders.get(order_id)
+
+    if order is None:
+        return False
+
+    if order.status == "cancelled":
+        return True
+
+    if order.status in ("picked_up", "delivered"):
+        return False
+
+    pickup_window_id = order.pickup_window_id
+    pickup_window = pickup_windows.get(pickup_window_id)
+
+    if order.status == "scheduled":
+        if pickup_window is None:
+            return False
+        pickup_window.used -= 1
+        order.pickup_window_id = None
+
+    # why is order.status = "cancelled" outside the previous code block?
+    # 1) Pending orders would never be canceled
+    # - A pending order has no pickup window, but it is still cancelable.
+    # - Putting the state change inside that block silently skips it.
+
+    # 2) You mix transition logic with cleanup logic
+    # - That makes it harder to reason about correctness when the lifecycle grows
+    #   (reschedule, retry, recovery, audits).
+    order.status = "cancelled"
+    return True
+
+
+     
