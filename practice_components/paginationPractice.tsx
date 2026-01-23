@@ -76,8 +76,11 @@ export function TablePaginationDemo() {
   } = useMemo(() => paginate(DATA, page, pageSize), [page, pageSize]);
 
   useEffect(() => {
-    if (page != safePage) setPage(safePage);
+    if (page !== safePage) {
+      setPage(safePage);
+    }
   }, [page, safePage]);
+
   return (
     <div>
       <PaginationControls
