@@ -202,4 +202,8 @@ def cancel_order(order_id: int) -> bool:
     return True
 
 
-     
+# Follow-up questions to expect
+# - What happens if cancel_order is called twice?
+# - What if cancel_order races with reschedule_order?
+# - Would your approach change with a database?
+# - Where would retries or guards live in a real system?

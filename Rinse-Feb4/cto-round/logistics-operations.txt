@@ -1,0 +1,91 @@
+## 1. One system (logistics-aligned)
+
+**Prompt**
+
+> Tell me about a system you built that dealt with real operational constraints.
+
+**Strong answer**
+
+> I built a scheduling system that assigned time-windowed work against limited daily capacity.
+> Orders could be scheduled, rescheduled, canceled, or retried, and the system had to stay consistent 
+> even when calls were repeated or arrived out of order.
+>
+> The complexity wasn’t the data structures. It was making sure capacity was never over- or 
+> under-counted while still allowing flexibility when plans changed.
+
+If interrupted with “what made it hard?”:
+
+> The hard part was modeling state transitions so that every change had a clear before and after, 
+> and nothing ended up half-applied.
+
+---
+
+## 2. One failure (operations realism)
+
+**Prompt**
+
+> Tell me about a failure that affected operations.
+
+**Strong answer**
+
+> We had a case where reschedules caused capacity to drift. Nothing crashed, but over time the system 
+> thought certain windows were full when they weren’t.
+>
+> The root cause was that reschedule logic adjusted capacity incrementally instead of treating it as a 
+> release followed by a new allocation. I fixed it by making reschedule a composed operation instead 
+> of a special case.
+
+If pressed:
+
+> The takeaway was that “small” state adjustments accumulate. Explicit undo and redo beats clever deltas.
+
+---
+
+## 3. One tradeoff (relevant to Rinse)
+
+**Prompt**
+
+> What tradeoff did you make that affected performance or flexibility?
+
+**Strong answer**
+
+> I chose to make all order mutations synchronous and explicit, even though we could have made 
+> parts asynchronous earlier.
+>
+> That limited throughput initially, but it gave us strong guarantees that capacity, timing, and 
+> order state were always in sync. Once that was stable, async became an optimization instead 
+> of a risk.
+
+If asked why that matters:
+
+> In logistics, being slightly slower is usually better than being wrong.
+
+---
+
+## 4. One ambiguous call (real-world ops)
+
+**Prompt**
+
+> Tell me about a decision you had to make without clear requirements.
+
+**Strong answer**
+
+> There wasn’t a clear rule for how late an order could be canceled. Instead of guessing, I made 
+> cancellation rules strict and explicit and forced downstream systems to respect them.
+>
+> That meant saying “no” in some edge cases, but it avoided surprise capacity changes and made 
+> behavior predictable for operators.
+
+If they push back:
+
+> You can always loosen constraints later. Tightening them after chaos is much harder.
+
+---
+
+## Close (very Rinse-friendly)
+
+If the CTO asks “how do you think about logistics systems?”:
+
+> I treat them like accounting systems. Every change needs a clean audit trail, and the numbers 
+> should always reconcile.
+

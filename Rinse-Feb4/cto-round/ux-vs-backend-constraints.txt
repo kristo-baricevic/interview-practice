@@ -1,0 +1,87 @@
+## 1. One system (UX + ops tension)
+
+**Prompt**
+
+> Tell me about a system where user experience and operational constraints were in tension.
+
+**Strong answer**
+
+> I worked on a workflow UI that let operators schedule and modify time-based work while enforcing 
+> strict backend capacity rules. Users expected the interface to feel flexible and forgiving, but 
+> under the hood every action had real downstream impact.
+>
+> The key was separating intent from execution. The UI captured what the user wanted to do, and the 
+> backend validated whether it was allowed. That let the frontend stay responsive without lying 
+> about what would actually happen.
+
+If interrupted with “what did you own?”:
+
+> I owned both the UI logic and the backend rules, so I had to make sure they stayed in sync.
+
+---
+
+## 2. One failure (UX-driven)
+
+**Prompt**
+
+> Tell me about a UX-driven failure.
+
+**Strong answer**
+
+> Early on, the UI optimistically updated schedules before the backend confirmed capacity. When 
+> validation failed, users saw work “jump” or disappear.
+>
+> I fixed it by making state transitions explicit in the UI. Pending changes were visually distinct 
+> from confirmed ones, and only backend-confirmed updates became durable.
+
+If pressed:
+
+> The lesson was that fast feedback is good, but false certainty is worse.
+
+---
+
+## 3. One tradeoff (product-facing)
+
+**Prompt**
+
+> What tradeoff did you make that affected user experience?
+
+**Strong answer**
+
+> I chose to block certain actions outright instead of allowing them and correcting later. That made 
+> the UI feel stricter, but it reduced surprise and support burden.
+>
+> We compensated by explaining constraints clearly in the UI rather than hiding them.
+
+If they ask “did users complain?”:
+
+> Less than I expected. Most frustration came from unpredictable behavior, not rules.
+
+---
+
+## 4. One ambiguous call (UX rules)
+
+**Prompt**
+
+> Describe a call you made where product and engineering weren’t aligned.
+
+**Strong answer**
+
+> There was debate about whether to allow overlapping edits while capacity checks were pending. I 
+> decided against it and enforced a single pending change per order.
+>
+> It limited power users, but it made the system understandable and prevented race conditions we 
+> weren’t ready to handle yet.
+
+If pushed:
+
+> Once the system was stable, we could revisit concurrency. Early on, simplicity mattered more.
+
+---
+
+## Close (strong signal)
+
+If the CTO asks “how do you balance UX and constraints?”:
+
+> I try to make constraints visible instead of pretending they don’t exist. Users can work with 
+> rules if they trust them.

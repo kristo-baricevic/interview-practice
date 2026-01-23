@@ -1,0 +1,93 @@
+## 1. One system you built end to end
+
+**Prompt**
+
+> Pick one system you’ve built where you owned the design and the day-to-day reality.
+> Walk me through what it did, who it was for, and where the complexity actually was.
+
+**What a strong answer sounds like**
+
+> I built a scheduling and workflow system that coordinated outbound messages and follow-ups across email and LinkedIn.
+> The core problem was that actions were time-based, capacity-limited, and could be retried or canceled, so correctness 
+> mattered more than throughput.
+>
+> I modeled each unit of work as an explicit record with a small set of states and stored only intent. Everything else 
+> like availability, ordering, and retries was derived. The hard part wasn’t writing the code, it was making sure the 
+> system behaved predictably when things were retried, delayed, or partially failed.
+
+*If the CTO follows up with with “what was the hardest part?”*
+
+> The hardest part was preventing half-completed work. I had to be very deliberate about when state changed and make 
+> sure side effects either fully happened or didn’t happen at all.
+
+---
+
+## 2. One failure you handled
+
+**Prompt**
+
+> Tell me about something that broke in production. Not a toy bug. Something real.
+
+**Strong answer**
+
+> We had a case where jobs were being scheduled far into the future even though near-term capacity existed. The system 
+> wasn’t wrong syntactically, but the logic compounded small delays and pushed everything forward.
+>
+> I traced it by logging state transitions instead of values. Once I could see when the first shift happened, it was 
+> clear that subsequent work was anchoring to the wrong base date. I fixed it by making the base shift explicit and
+> applying it exactly once, instead of implicitly letting it cascade.
+
+*If pressed*:
+
+> The lesson for me was that time-based systems fail quietly. If you don’t make transitions explicit, you end up 
+> debugging behavior instead of code.
+
+---
+
+## 3. One tradeoff you made
+
+**Prompt**
+
+> Tell me about a tradeoff you made where there wasn’t a clearly “right” answer.
+
+**Strong answer**
+
+> I chose explicit state over clever inference. It meant more fields and more checks, but it made the system easier 
+> to reason about and safer to change.
+>
+> The tradeoff was verbosity versus clarity. I accepted some repetition because it let anyone reading the code understand 
+> what was allowed and what wasn’t without needing to reconstruct intent from side effects.
+
+If they ask “would you do it again?”:
+
+> Yes, especially for systems where retries and partial failures are normal. I’ll optimize later, but I want correctness first.
+
+---
+
+## 4. One ambiguous call you made
+
+**Prompt**
+
+> Describe a situation where the requirements were unclear and you had to decide anyway.
+
+**Strong answer**
+
+> We didn’t have a clear answer on how repeated calls should behave. For example, what happens if cancel is called twice, 
+> or reschedule is called after pickup.
+>
+> I made the call to make operations idempotent and explicitly block invalid transitions. That reduced surprise and made 
+> retries safe, even if it meant saying “no” more often than the product initially expected.
+
+If they push:
+
+> I try to bias toward predictable behavior. If something is ambiguous, I’d rather make it explicit and revisit than let 
+> undefined behavior leak into production.
+
+---
+
+## How to close the conversation
+
+If the CTO says “anything you’d do differently now?”:
+
+> I’d spend even more time upfront naming states and transitions. Once that’s solid, everything else tends to fall into place.
+
