@@ -1,3 +1,35 @@
+// Requirements
+
+// - Display the list of orders
+
+// - Allow filtering by status
+
+// - Allow sorting by pickupTime (ascending or descending)
+
+// - Filters and sort should not reset each other
+
+// - Code should be clear and easy to reason about
+
+// You can assume:
+// - Data is already loaded
+// - No CSS required
+// - React or plain JS is fine. Pick what you’re most comfortable with.
+
+// What I’m looking for
+// - Where state lives
+// - What is derived vs stored
+// - Clean data flow
+// - No unnecessary complexity
+
+// Start here
+
+// Tell me:
+// - What state you would store
+// - What you would derive
+
+// Then start writing code
+// You can begin with a function signature or a React component.
+
 import * as React from "react";
 import { useState, useEffect, useMemo } from "react";
 
@@ -95,55 +127,14 @@ export function Dashboard() {
       <table>
         <tbody>
           {visibleData?.map((o: Order) => {
-            <td id={o.id}>
-              <tr>{o.customerName}</tr>
-              <tr>{o.status}</tr>
-              <tr>{timeDateConverter(o.pickupTime)}</tr>
-            </td>;
+            <tr id={o.id}>
+              <td>{o.customerName}</td>
+              <td>{o.status}</td>
+              <td>{timeDateConverter(o.pickupTime)}</td>
+            </tr>;
           })}
         </tbody>
       </table>
     </div>
   );
 }
-// Requirements
-
-// - Display the list of orders
-
-// - Allow filtering by status
-
-// - Allow sorting by pickupTime (ascending or descending)
-
-// - Filters and sort should not reset each other
-
-// - Code should be clear and easy to reason about
-
-// You can assume:
-
-// - Data is already loaded
-
-// - No CSS required
-
-// - React or plain JS is fine. Pick what you’re most comfortable with.
-
-// What I’m looking for
-
-// - Where state lives
-
-// - What is derived vs stored
-
-// - Clean data flow
-
-// - No unnecessary complexity
-
-// Start here
-
-// Tell me:
-
-// - What state you would store
-
-// - What you would derive
-
-// Then start writing code
-
-// You can begin with a function signature or a React component.
