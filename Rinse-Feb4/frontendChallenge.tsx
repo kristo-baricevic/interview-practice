@@ -47,34 +47,33 @@ const timeDateConverter = (pickupTime: number) => {
 };
 
 export function Dashboard() {
-  const [statusFilter, setStatusFilter] = useState("");
+  const [filtered, setFiltered] = useState("");
   const [order, setOrder] = useState("");
 
-  //useMemo just keeps the last result of a calculation so React doesn’t have to redo it if nothing relevant changed.
   const visibleData = useMemo(() => {
-    let result = DATA;
+    let results = DATA;
 
-    if (statusFilter) {
-      result = result.filter((o) => o.status === statusFilter);
+    if (filtered) {
+      results = results.filter((r) => r.status === filtered);
     }
 
-    if (order === "ascending") {
-      result = [...result].sort((a, b) => a.pickupTime - b.pickupTime);
+    if (order == "ascending") {
+      results = [...results].sort((a, b) => a.pickupTime - b.pickupTime);
     }
 
-    if (order === "descending") {
-      result = [...result].sort((a, b) => b.pickupTime - a.pickupTime);
+    if (order == "descending") {
+      results = [...results].sort((a, b) => b.pickupTime - a.pickupTime);
     }
 
-    return result;
-  }, [statusFilter, order]);
+    return results;
+  }, [filtered, order]);
 
   return (
     <div>
       <select
-        value={statusFilter}
+        value={filtered}
         onChange={(e) => {
-          setStatusFilter(e.target.value);
+          setFiltered(e.target.value);
         }}
       >
         <option value="scheduled">Scheduled</option>
@@ -86,18 +85,17 @@ export function Dashboard() {
       <select
         value={order}
         onChange={(e) => {
-          setOrder(e.target.value);
+          setOrder(e.target.Value);
         }}
       >
-        <option value="ascending">Ascending</option>
-        <option value="descending">Descending</option>
-        <option value="">None</option>
+        <option value=""></option>
+        <option value=""></option>
+        <option value=""></option>
       </select>
-
       <table>
         <tbody>
           {visibleData?.map((o: Order) => {
-            <td key={o.id}>
+            <td id={o.id}>
               <tr>{o.customerName}</tr>
               <tr>{o.status}</tr>
               <tr>{timeDateConverter(o.pickupTime)}</tr>
