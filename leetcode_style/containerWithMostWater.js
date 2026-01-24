@@ -14,8 +14,6 @@
 // I move the pointer pointing to the shorter line inward,
 // because moving the taller one cannot increase the area.
 
-// This sentence matters.
-
 function maxArea(height) {
   let left = 0;
   let right = height.length - 1;
@@ -39,9 +37,7 @@ function maxArea(height) {
 // Why this works
 
 // Width always shrinks
-
 // Only increasing the limiting height can improve area
-
 // Two pointers guarantee linear time
 
 // Time: O(n)

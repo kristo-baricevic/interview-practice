@@ -30,11 +30,9 @@ function removeDuplicates(nums) {
 
 // Why this works
 
-// read scans the array
-
-// write tracks where the next unique value goes
-
-// Everything before write is unique
+// - read scans the array
+// - write tracks where the next unique value goes
+// - Everything before write is unique
 
 // Time: O(n)
 // Space: O(1)

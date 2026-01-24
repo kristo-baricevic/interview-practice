@@ -71,3 +71,56 @@ function countServiceRegions(grid) {
 
 // Time is O(rows × cols) because each cell is visited once.
 // Space is O(rows × cols) in the worst case for the call stack or queue.
+
+// bfs version
+
+function countServiceRegions(grid) {
+  if (!grid || grid.length === 0) return 0;
+
+  const rows = grid.length;
+  const cols = grid[0].length;
+  let count = 0;
+
+  const directions = [
+    [1, 0],
+    [-1, 0],
+    [0, 1],
+    [0, -1],
+  ];
+
+  function bfs(startR, startC) {
+    const queue = [[startR, startC]];
+    grid[startR][startC] = 0; // mark visited
+
+    while (queue.length > 0) {
+      const [r, c] = queue.shift();
+
+      for (const [dr, dc] of directions) {
+        const nr = r + dr;
+        const nc = c + dc;
+
+        if (
+          nr >= 0 &&
+          nr < rows &&
+          nc >= 0 &&
+          nc < cols &&
+          grid[nr][nc] === 1
+        ) {
+          grid[nr][nc] = 0;
+          queue.push([nr, nc]);
+        }
+      }
+    }
+  }
+
+  for (let r = 0; r < rows; r++) {
+    for (let c = 0; c < cols; c++) {
+      if (grid[r][c] === 1) {
+        count++;
+        bfs(r, c);
+      }
+    }
+  }
+
+  return count;
+}

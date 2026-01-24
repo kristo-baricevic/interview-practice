@@ -26,6 +26,7 @@
 
 import * as React from "react";
 import { useState, useMemo } from "react";
+import { useEffect } from "react/cjs/react.production";
 
 type Order = {
   id: string;
@@ -61,9 +62,9 @@ const DATA: Order[] = [
   },
 ];
 
-function paginate<T>(items: T[], page: number, pageSize: number) {
+function pagination<T>(items: T[], page, pageSize) {
   const total = items.length;
-  const totalPages = Math.max(1, Math.ceil(total / pageSize));
+  const totalPages = Math.max(1, total / pageSize);
 
   const safePage = Math.min(Math.max(1, page), totalPages);
   const start = (safePage - 1) * pageSize;
@@ -76,38 +77,44 @@ function paginate<T>(items: T[], page: number, pageSize: number) {
   };
 }
 
-function Pagination({ totalPages, page, onPageChange }) {
+const Pagination = ({ page, totalPages, onPageChange }) => {
   return (
     <div>
       <button
         type="button"
         disabled={page <= 1}
-        onClick={() => onPageChange(page - 1)}
+        onClick={() => {
+          onPageChange(page - 1);
+        }}
       >
         Prev
       </button>
       <span>
-        {page}\{totalPages}
+        {page} \ {totalPages}
       </span>
       <button
         type="button"
         disabled={page >= totalPages}
-        onClick={() => onPageChange(page + 1)}
+        onClick={() => {
+          onPageChange(page + 1);
+        }}
       >
         Next
       </button>
     </div>
   );
-}
+};
 
-export function TableWithPagination() {
-  const [filter, setFilter] = useState("");
+export const Table = () => {
   const [page, setPage] = useState(1);
   const [pageSize] = useState(10);
 
-  const filtered = useMemo(() => {
+  const [filter, setFilter] = useState("");
+
+  const filteredItems = useMemo(() => {
     if (!filter) return DATA;
-    return DATA.filter((o) => o.status === filter);
+
+    return DATA.filter((d) => d.status == filter);
   }, [filter]);
 
   const {
@@ -115,9 +122,9 @@ export function TableWithPagination() {
     total,
     totalPages,
     pageItems,
-  } = paginate<Order>(filtered, page, pageSize);
+  } = pagination<Order>(filteredItems, page, pageSize);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (page !== safePage) {
       setPage(safePage);
     }
@@ -125,6 +132,7 @@ export function TableWithPagination() {
 
   return (
     <div>
+      <h1>Table with Filters</h1>
       <select value={filter} onChange={(e) => setFilter(e.target.value)}>
         <option value="scheduled">Scheduled</option>
         <option value="picked_up">Picked Up</option>
@@ -132,18 +140,18 @@ export function TableWithPagination() {
         <option value="canceled">Canceled</option>
         <option value="">No Filter</option>
       </select>
-      <div>{total} Customers</div>
+      <div>{total} Orders</div>
       <table>
         <tbody>
-          {pageItems?.map((o: Order) => (
-            <tr key={o.id}>
+          {pageItems.map((o: Order) => {
+            <tr id={o.id}>
               <td>{o.customerName}</td>
               <td>{o.status}</td>
-            </tr>
-          ))}
+            </tr>;
+          })}
         </tbody>
       </table>
-      <Pagination totalPages={totalPages} page={page} onPageChange={setPage} />
+      <Pagination page={page} totalPages={totalPages} onPageChange={setPage} />
     </div>
   );
-}
+};

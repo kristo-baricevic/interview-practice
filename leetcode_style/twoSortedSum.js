@@ -1,4 +1,4 @@
-// Two-Pointer Problem: Two Sum (Sorted Array)
+// Two Sum (Sorted Array)
 // You are given a sorted array of integers nums and a target number target.
 // Return the indices of the two numbers that add up to target.
 // You may assume:
@@ -9,6 +9,7 @@
 // target = 6
 
 // this solution is better when the array is unsorted (time and space are both O(n))
+
 function twoSum(nums, target) {
   const seen = new Map();
 
@@ -26,6 +27,7 @@ function twoSum(nums, target) {
 }
 
 // this solution is better when the array is sorted (time is O(n) but space is only O(1))
+
 function twoSumSorted(nums, target) {
   let left = 0;
   let right = nums.length - 1;

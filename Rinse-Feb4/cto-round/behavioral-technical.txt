@@ -7,13 +7,15 @@
 
 **What a strong answer sounds like**
 
-> I built a scheduling and workflow system that coordinated outbound messages and follow-ups across email and LinkedIn.
-> The core problem was that actions were time-based, capacity-limited, and could be retried or canceled, so correctness 
-> mattered more than throughput.
->
-> I modeled each unit of work as an explicit record with a small set of states and stored only intent. Everything else 
-> like availability, ordering, and retries was derived. The hard part wasn’t writing the code, it was making sure the 
-> system behaved predictably when things were retried, delayed, or partially failed.
+> I built a system that scheduled and sent messages across email and LinkedIn, and handled 
+> follow-ups when replies didn’t come in. The tricky part was that everything happened 
+> over time and could change. Messages could be delayed, canceled, or retried, and the system 
+> needed to stay consistent when that happened.
+
+> I represented each message as a simple record with a clear status, and treated scheduling 
+> decisions as something the system recalculated instead of something it permanently stored. 
+> The hardest part wasn’t the code itself. It was making sure the system always did the same, 
+> predictable thing when something was retried or interrupted.
 
 *If the CTO follows up with with “what was the hardest part?”*
 

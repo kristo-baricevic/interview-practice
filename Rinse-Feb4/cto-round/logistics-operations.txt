@@ -6,17 +6,16 @@
 
 **Strong answer**
 
-> I built a scheduling system that assigned time-windowed work against limited daily capacity.
-> Orders could be scheduled, rescheduled, canceled, or retried, and the system had to stay consistent 
-> even when calls were repeated or arrived out of order.
+> I built a scheduling system that assigned work into specific time windows with a fixed amount of daily capacity.
+> Orders could be scheduled, moved, canceled, or retried, and the system had to behave correctly even when the same
+> request came in more than once or arrived in an unexpected order.
 >
-> The complexity wasn’t the data structures. It was making sure capacity was never over- or 
-> under-counted while still allowing flexibility when plans changed.
+> The tricky part wasn’t the data structures. It was making sure capacity never went negative or got double-counted
+> while still letting plans change.
 
 If interrupted with “what made it hard?”:
 
-> The hard part was modeling state transitions so that every change had a clear before and after, 
-> and nothing ended up half-applied.
+> The hard part was making sure every change had a clear before and after, so nothing ended up partially applied.
 
 ---
 
@@ -28,16 +27,16 @@ If interrupted with “what made it hard?”:
 
 **Strong answer**
 
-> We had a case where reschedules caused capacity to drift. Nothing crashed, but over time the system 
-> thought certain windows were full when they weren’t.
+> We ran into a bug where moving orders around slowly threw off capacity. Nothing broke outright, but over time the
+> system started thinking certain time windows were full when they weren’t.
 >
-> The root cause was that reschedule logic adjusted capacity incrementally instead of treating it as a 
-> release followed by a new allocation. I fixed it by making reschedule a composed operation instead 
-> of a special case.
+> The issue was that rescheduling tweaked capacity bit by bit instead of treating it as “free the old slot, then
+> take a new one.” I fixed it by making rescheduling follow that same two-step process every time.
 
 If pressed:
 
-> The takeaway was that “small” state adjustments accumulate. Explicit undo and redo beats clever deltas.
+> The lesson was that small adjustments add up. It’s safer to undo the old thing and redo it cleanly than to try
+> to be clever.
 
 ---
 
@@ -49,16 +48,15 @@ If pressed:
 
 **Strong answer**
 
-> I chose to make all order mutations synchronous and explicit, even though we could have made 
-> parts asynchronous earlier.
+> I decided to apply order changes one at a time in a very direct way, even though we could have made parts of it
+> faster earlier on.
 >
-> That limited throughput initially, but it gave us strong guarantees that capacity, timing, and 
-> order state were always in sync. Once that was stable, async became an optimization instead 
-> of a risk.
+> That meant things were a bit slower at first, but it kept capacity, timing, and order status in sync. Once we
+> trusted the system, we could speed it up without worrying about breaking it.
 
 If asked why that matters:
 
-> In logistics, being slightly slower is usually better than being wrong.
+> In logistics, it’s usually better to be slightly slower than to be wrong.
 
 ---
 
@@ -70,15 +68,15 @@ If asked why that matters:
 
 **Strong answer**
 
-> There wasn’t a clear rule for how late an order could be canceled. Instead of guessing, I made 
-> cancellation rules strict and explicit and forced downstream systems to respect them.
+> There wasn’t a clear rule for how late someone could cancel an order. Instead of guessing, I made the rules strict
+> and enforced them everywhere.
 >
-> That meant saying “no” in some edge cases, but it avoided surprise capacity changes and made 
-> behavior predictable for operators.
+> That meant rejecting some edge cases, but it prevented sudden capacity changes and made the system’s behavior
+> predictable for the people using it.
 
 If they push back:
 
-> You can always loosen constraints later. Tightening them after chaos is much harder.
+> You can always loosen rules later. Fixing messy behavior after the fact is much harder.
 
 ---
 
@@ -86,6 +84,5 @@ If they push back:
 
 If the CTO asks “how do you think about logistics systems?”:
 
-> I treat them like accounting systems. Every change needs a clean audit trail, and the numbers 
-> should always reconcile.
+> I think of them like bookkeeping. Every change needs to add up, and the numbers should always match.
 
