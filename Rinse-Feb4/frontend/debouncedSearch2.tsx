@@ -62,47 +62,45 @@ function useDebounce(query, delay = 300) {
   const [debounced, setDebounced] = useState(query);
 
   useEffect(() => {
-    const t = setTimeout(() => setDebounced(query), 300);
+    const t = setTimeout(() => setDebounced(query), delay);
     () => clearTimeout(t);
   }, [query, delay]);
 
   return debounced;
 }
 
-export function TableWithSearch() {
+function TableWithSearch() {
   const [searchTerm, setSearchTerm] = useState("");
 
-  const debounced = useDebounce(searchTerm);
+  const debouncedQuery = useDebounce(searchTerm);
 
   const visibleData = useMemo(() => {
-    if (!searchTerm) return DATA;
+    if (!debouncedQuery) return DATA;
 
-    let result = DATA.filter((d) =>
-      d.name.toLowerCase().includes(debounced.toLowerCase())
+    return DATA.filter((o) =>
+      o.name.toLowerCase().includes(debouncedQuery.toLowerCase())
     );
-
-    return result;
-  });
+  }, [debouncedQuery]);
 
   return (
     <div>
       <h1>Table with Search</h1>
       <input
         value={searchTerm}
-        onChange={(e) => {
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
           setSearchTerm(e.target.value);
         }}
         placeholder="Search Name"
       />
       <table>
-        <tbody>
-          {visibleData.map((o) => {
-            <tr key={o.id}>
+        <thead>
+          {visibleData?.map((o: Customer) => (
+            <tr id={o.id}>
               <td>{o.name}</td>
               <td>{o.email}</td>
-            </tr>;
-          })}
-        </tbody>
+            </tr>
+          ))}
+        </thead>
       </table>
     </div>
   );

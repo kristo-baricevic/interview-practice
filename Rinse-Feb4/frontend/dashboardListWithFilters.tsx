@@ -126,13 +126,13 @@ export function Dashboard() {
       </select>
       <table>
         <tbody>
-          {visibleData?.map((o: Order) => {
+          {visibleData?.map((o: Order) => (
             <tr id={o.id}>
               <td>{o.customerName}</td>
               <td>{o.status}</td>
               <td>{timeDateConverter(o.pickupTime)}</td>
-            </tr>;
-          })}
+            </tr>
+          ))}
         </tbody>
       </table>
     </div>

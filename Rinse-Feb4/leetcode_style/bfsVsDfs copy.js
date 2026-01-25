@@ -11,27 +11,24 @@
 // A service region is a group of 1s connected horizontally or vertically.
 // We need to count how many distinct regions exist.
 
-function countServiceRegions(grid) {
-  if (!grid || grid.length === 0) return 0;
+function countServiceRegionsDFS(grid) {
+  if (!grid || grid.length === 0) return;
 
   const rows = grid.length;
   const cols = grid[0].length;
   let count = 0;
 
   function dfs(r, c) {
-    // out of bounds or blocked
-    if (r < 0 || r >= rows || c < 0 || c >= cols || grid[r][c] === 0) {
+    if (r < 0 || r > rows || c < 0 || c > cols || grid[r][c] === 0) {
       return;
     }
 
-    // mark as visited
     grid[r][c] = 0;
 
-    // explore neighbors
-    dfs(r + 1, c);
     dfs(r - 1, c);
-    dfs(r, c + 1);
+    dfs(r + 1, c);
     dfs(r, c - 1);
+    dfs(r, c + 1);
   }
 
   for (let r = 0; r < rows; r++) {
@@ -45,7 +42,6 @@ function countServiceRegions(grid) {
 
   return count;
 }
-
 // Follow-ups
 // - BFS or DFS, which do you prefer and why?
 //
@@ -79,7 +75,6 @@ function countServiceRegions(grid) {
 
   const rows = grid.length;
   const cols = grid[0].length;
-  let count = 0;
 
   const directions = [
     [1, 0],
@@ -106,7 +101,7 @@ function countServiceRegions(grid) {
           nc < cols &&
           grid[nr][nc] === 1
         ) {
-          grid[nr][nc] = 0;
+          grid[nr][nc] === 0;
           queue.push([nr, nc]);
         }
       }

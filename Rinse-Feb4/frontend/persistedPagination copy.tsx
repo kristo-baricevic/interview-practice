@@ -143,12 +143,12 @@ export const Table = () => {
       <div>{total} Orders</div>
       <table>
         <tbody>
-          {pageItems.map((o: Order) => {
+          {pageItems.map((o: Order) => (
             <tr id={o.id}>
               <td>{o.customerName}</td>
               <td>{o.status}</td>
-            </tr>;
-          })}
+            </tr>
+          ))}
         </tbody>
       </table>
       <Pagination page={page} totalPages={totalPages} onPageChange={setPage} />

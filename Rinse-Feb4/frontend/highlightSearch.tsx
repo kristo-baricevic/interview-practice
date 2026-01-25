@@ -89,14 +89,14 @@ export function CustomerList() {
       />
       <table>
         <tbody>
-          {visibleData?.map((c) => {
+          {visibleData?.map((c) => (
             <tr id={c.id}>
               <td>
                 <HighlightedQuery name={c.name} query={searchTerm} />
               </td>
               <td>{c.email}</td>
-            </tr>;
-          })}
+            </tr>
+          ))}
         </tbody>
       </table>
     </div>
