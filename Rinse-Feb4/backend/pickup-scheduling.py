@@ -54,7 +54,7 @@ class PickupWindow:
     capacity: int
     used: int
 
-def scheduleOrder(order_id: int, pickup_window_id: int) -> bool:
+def schedule_order(order_id: int, pickup_window_id: int) -> bool:
     ## objects in memory
     order = orders.get(order_id)
     pickup_window = pickup_windows.get(pickup_window_id)
