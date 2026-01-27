@@ -16,9 +16,9 @@ function mostUsedPickupWindow(orders) {
   let maxWindow = null;
   let maxCount = 0;
 
-  for (const count of counts) {
-    const id = counts.pickup_window_id;
-    const newCount = (seen.get(id) || 0) + 1;
+  for (const order of orders) {
+    const id = order.pickup_window_id;
+    const newCount = (counts.get(id) || 0) + 1;
     counts.set(id, newCount);
 
     if (newCount > maxCount) {
@@ -26,6 +26,7 @@ function mostUsedPickupWindow(orders) {
       maxWindow = id;
     }
   }
+
   return maxWindow;
 }
 

@@ -12,35 +12,33 @@
 // We need to count how many distinct regions exist.
 
 function countServiceRegionsDFS(grid) {
-  if (!grid || grid.length === 0) return;
+  if (!grid || grid.length == 0) return 0;
 
   const rows = grid.length;
   const cols = grid[0].length;
-  let count = 0;
+  const counts = 0;
 
   function dfs(r, c) {
-    if (r < 0 || r > rows || c < 0 || c > cols || grid[r][c] === 0) {
+    if (r < 0 || r >= rows || c < 0 || c >= cols) {
       return;
     }
 
     grid[r][c] = 0;
 
-    dfs(r - 1, c);
-    dfs(r + 1, c);
-    dfs(r, c - 1);
-    dfs(r, c + 1);
+    dfs([r - 1, c]);
+    dfs([r + 1, c]);
+    dfs([r, c - 1]);
+    dfs([r, c + 1]);
   }
 
   for (let r = 0; r < rows; r++) {
-    for (let c = 0; c < cols; c++) {
+    for (let c = 0; c < rows[0].length; c++) {
       if (grid[r][c] === 1) {
-        count++;
+        counts++;
         dfs(r, c);
       }
     }
   }
-
-  return count;
 }
 // Follow-ups
 // - BFS or DFS, which do you prefer and why?

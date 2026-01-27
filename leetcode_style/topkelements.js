@@ -22,7 +22,7 @@
 function topKFrequent(nums, k) {
   const counts = {};
 
-  for (n in nums) {
+  for (let n of nums) {
     counts[n] = (counts[n] || 0) + 1;
   }
 
