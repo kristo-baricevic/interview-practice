@@ -1,0 +1,41 @@
+body {
+  height: 100vh;
+  margin: 0;
+  display: grid;
+  place-items: center;
+}
+
+.box {
+  width: 500px;
+  border: solid 1px grey;
+  padding: 20px;
+  border-radius: 10px;
+  h1 {
+    font-size: 20px;
+    margin: 0 0 1rem 0;
+  }
+}
+
+.progress {
+  margin-right: 10px;
+  width: 400px;
+  accent-color: blue;
+}
+
+.progress-complete {
+  margin-right: 10px;
+  width: 400px;
+  accent-color: green;
+}
+
+.progress-canceled {
+  margin-right: 10px;
+  width: 400px;
+  accent-color: red;
+}
+
+.progressContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
