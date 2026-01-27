@@ -21,23 +21,16 @@
  * }
  */
 
-class Solution {
-  /**
-   * @param {ListNode} head
-   * @return {ListNode}
-   */
-  reverseList(head) {
-    if (!head) {
-      return null;
-    }
+var reverseList = function (head) {
+  let prev = null;
+  let curr = head;
 
-    let newHead = head;
-    if (head.next) {
-      newHead = this.reverseList(head.next);
-      head.next.next = head;
-    }
-    head.next = null;
-
-    return newHead;
+  while (curr) {
+    const next = curr.next; // save next
+    curr.next = prev; // reverse pointer
+    prev = curr; // move prev forward
+    curr = next; // move curr forward
   }
-}
+
+  return prev;
+};
