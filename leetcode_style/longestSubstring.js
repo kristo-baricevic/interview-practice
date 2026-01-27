@@ -7,22 +7,11 @@
 // longestSubstring("abcabcbb") // 3  ("abc")
 // longestSubstring("bbbbb")    // 1  ("b")
 // longestSubstring("pwwkew")   // 3  ("wke")
-
 function longestSubstring(s) {
   if (s.length < 2) return s.length;
 
-  const left = 0;
-  const maxLength = 0;
-  const seen = new Set();
-
-  for (let right = 0; right < s.length; right++) {}
-}
-
-function longestSubstring(s) {
-  if (s.length < 2) return s.length;
-
-  const left = 0;
-  const maxLength = 0;
+  let left = 0;
+  let maxLength = 0;
   const seen = new Set();
 
   for (let right = 0; right < s.length; right++) {
