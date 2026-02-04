@@ -90,16 +90,15 @@ export function Dashboard() {
     }
 
     if (order == "ascending") {
-      results = [...results].sort((a, b) => a.pickupTime - b.pickupTime);
+      results = [...results].sort((a, b) => b.pickupTime - a.pickupTime);
     }
 
     if (order == "descending") {
-      results = [...results].sort((a, b) => b.pickupTime - a.pickupTime);
+      results = [...results].sort((b, a) => b.pickupTime - a.pickupTime);
     }
 
     return results;
   }, [filtered, order]);
-
   return (
     <div>
       <select
@@ -112,17 +111,7 @@ export function Dashboard() {
         <option value="picked_up">Picked Up</option>
         <option value="delivered">Delivered</option>
         <option value="canceled">Canceled</option>
-        <option value="">None</option>
-      </select>
-      <select
-        value={order}
-        onChange={(e) => {
-          setOrder(e.target.Value);
-        }}
-      >
-        <option value=""></option>
-        <option value=""></option>
-        <option value=""></option>
+        <option value="none">None</option>
       </select>
       <table>
         <tbody>

@@ -31,7 +31,7 @@
 
 // Focus on correctness and UX
 
-import React from "react";
+import React, { ChangeEvent } from "react";
 import { useState, useEffect, useMemo } from "react";
 
 type Customer = {
@@ -58,49 +58,47 @@ const DATA: Customer[] = [
   },
 ];
 
-function useDebounce(query, delay = 300) {
-  const [debounced, setDebounced] = useState(query);
+function useDebounce(value: string, delay = 300) {
+  const [debounced, setDebounced] = useState(value);
 
   useEffect(() => {
-    const t = setTimeout(() => setDebounced(query), delay);
-    () => clearTimeout(t);
-  }, [query, delay]);
+    const t = setTimeout(() => setDebounced(value), delay);
+    return () => clearTimeout(t);
+  }, [value, delay]);
 
   return debounced;
 }
 
-function TableWithSearch() {
+export function DebouncedSearch() {
   const [searchTerm, setSearchTerm] = useState("");
+  const debouncedSearch = useDebounce(searchTerm);
 
-  const debouncedQuery = useDebounce(searchTerm);
+  const filteredData = useMemo(() => {
+    if (!debouncedSearch) return DATA;
 
-  const visibleData = useMemo(() => {
-    if (!debouncedQuery) return DATA;
-
-    return DATA.filter((o) =>
-      o.name.toLowerCase().includes(debouncedQuery.toLowerCase())
+    return DATA.filter((d) =>
+      d.name.toLowerCase().includes(debouncedSearch.toLowerCase())
     );
-  }, [debouncedQuery]);
+  }, [DebouncedSearch]);
 
   return (
     <div>
-      <h1>Table with Search</h1>
       <input
         value={searchTerm}
-        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+        onChange={(e: ChangeEvent<HTMLInputElement>) => {
           setSearchTerm(e.target.value);
         }}
         placeholder="Search Name"
       />
+
       <table>
-        <thead>
-          {visibleData?.map((o: Customer) => (
-            <tr id={o.id}>
-              <td>{o.name}</td>
-              <td>{o.email}</td>
+        <tbody>
+          {filteredData.map((m) => (
+            <tr key={m.id}>
+              <td>{m.name}</td>
             </tr>
           ))}
-        </thead>
+        </tbody>
       </table>
     </div>
   );

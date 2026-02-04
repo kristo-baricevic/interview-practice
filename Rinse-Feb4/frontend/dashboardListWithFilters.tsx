@@ -117,7 +117,7 @@ export function Dashboard() {
       <select
         value={order}
         onChange={(e) => {
-          setOrder(e.target.Value);
+          setOrder(e.target.value);
         }}
       >
         <option value=""></option>

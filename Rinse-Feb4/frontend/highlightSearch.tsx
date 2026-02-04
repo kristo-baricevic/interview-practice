@@ -76,7 +76,7 @@ export function CustomerList() {
     if (!searchTerm) return DATA;
 
     return DATA.filter((c) => c.name.includes(searchTerm));
-  }, searchTerm);
+  }, [searchTerm]);
 
   return (
     <div>

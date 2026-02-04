@@ -31,7 +31,7 @@
 
 // Focus on correctness and UX
 
-import React from "react";
+import React, { ChangeEvent } from "react";
 import { useState, useEffect, useMemo } from "react";
 
 type Customer = {
@@ -85,7 +85,9 @@ export function DebouncedSearch() {
     <div>
       <input
         value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
+        onChange={(e: ChangeEvent<HTMLInputElement>) => {
+          setSearchTerm(e.target.value);
+        }}
         placeholder="Search Name"
       />
 
