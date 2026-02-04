@@ -65,7 +65,7 @@ export default function Chat() {
       <ul>
         {messages.map((msg) => (
           <li key={msg.id}>
-            {msg.txt}
+            {msg.text}
             {msg.status === "sending" && "(...sending)"}
             {msg.status === "failed" && "(failed)"}
           </li>
